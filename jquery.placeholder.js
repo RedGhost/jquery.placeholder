@@ -1,5 +1,28 @@
 
 (function($){
+	var originalVal = $.fn.val;
+  $.fn.val = function(value) {
+    var input = this;
+    if((input.is('input:text') || input.is('input:password'))) {
+      var placeholder = input.next();
+      if(placeholder.hasClass('placeholderLabel')) {
+        if (value !== null && value !== '') {
+        	placeholder.hide();
+        }
+        else {
+        	placeholder.show();
+        }
+      }
+    }
+    
+    if (typeof(value) == 'undefined') { 
+  		return originalVal.call(this); 
+  	} 
+  	else { 
+  		return originalVal.call(this, value); 
+  	} 
+  };
+  
   $.support.placeholder = (function(){
     var i = document.createElement('input');
     return 'placeholder' in i;
@@ -15,7 +38,7 @@
         if($.support.placeholder) {
           return;
         }
-
+        
         if((!input.is('input:text') && !input.is('input:password'))) {
           return;
         }
@@ -43,7 +66,8 @@
           'cursor': 'text'
         });
 
-        input.focus(function() {
+        input
+        .blur(function() {
           var input = $(this);
           var placeholder = input.next();
 
@@ -51,18 +75,19 @@
             return;
           }
 
-          placeholder.hide();
-        }).blur(function() {
-          var input = $(this);
-          var placeholder = input.next();
-
-          if(!placeholder.hasClass('placeholderLabel')) {
-            return;
-          }
-
-          if(input.val() === '') {
+          if(input.val() === null || typeof(input.val()) === 'undefined' || input.val() === '') {
             placeholder.show();
           }
+        })
+        .focus(function () {
+        	var input = $(this);
+        	var placeholder = input.next();
+
+          if(!placeholder.hasClass('placeholderLabel')) {
+            return;
+          }
+          
+          placeholder.hide();
         });
         
         var container = $('<div></div>');
