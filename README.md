@@ -4,7 +4,9 @@ jquery.placeholder
 The jQuery Placeholder plugin provides legacy placeholder support to non-placeholder conforming browsers.
 
 To use:
+
 1. Include jquery.placeholder.js in your source code.
+
 2. For any field that you want to add placeholder support call .addPlaceholder. Note: The field must be an input:text or input:password and it must have a placeholder attribute associated with it.
 i.e.:
 HTML:
